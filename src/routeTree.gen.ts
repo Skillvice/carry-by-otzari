@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WalletRouteImport } from './routes/wallet'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SendRouteImport } from './routes/send'
 import { Route as RoutesRouteImport } from './routes/routes'
 import { Route as AccountRouteImport } from './routes/account'
@@ -18,6 +19,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const WalletRoute = WalletRouteImport.update({
   id: '/wallet',
   path: '/wallet',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SendRoute = SendRouteImport.update({
@@ -46,6 +52,7 @@ export interface FileRoutesByFullPath {
   '/account': typeof AccountRoute
   '/routes': typeof RoutesRoute
   '/send': typeof SendRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/wallet': typeof WalletRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +60,7 @@ export interface FileRoutesByTo {
   '/account': typeof AccountRoute
   '/routes': typeof RoutesRoute
   '/send': typeof SendRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/wallet': typeof WalletRoute
 }
 export interface FileRoutesById {
@@ -61,14 +69,22 @@ export interface FileRoutesById {
   '/account': typeof AccountRoute
   '/routes': typeof RoutesRoute
   '/send': typeof SendRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/wallet': typeof WalletRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/account' | '/routes' | '/send' | '/wallet'
+  fullPaths: '/' | '/account' | '/routes' | '/send' | '/sitemap.xml' | '/wallet'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/account' | '/routes' | '/send' | '/wallet'
-  id: '__root__' | '/' | '/account' | '/routes' | '/send' | '/wallet'
+  to: '/' | '/account' | '/routes' | '/send' | '/sitemap.xml' | '/wallet'
+  id:
+    | '__root__'
+    | '/'
+    | '/account'
+    | '/routes'
+    | '/send'
+    | '/sitemap.xml'
+    | '/wallet'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -76,6 +92,7 @@ export interface RootRouteChildren {
   AccountRoute: typeof AccountRoute
   RoutesRoute: typeof RoutesRoute
   SendRoute: typeof SendRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   WalletRoute: typeof WalletRoute
 }
 
@@ -86,6 +103,13 @@ declare module '@tanstack/react-router' {
       path: '/wallet'
       fullPath: '/wallet'
       preLoaderRoute: typeof WalletRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/send': {
@@ -124,6 +148,7 @@ const rootRouteChildren: RootRouteChildren = {
   AccountRoute: AccountRoute,
   RoutesRoute: RoutesRoute,
   SendRoute: SendRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   WalletRoute: WalletRoute,
 }
 export const routeTree = rootRouteImport
